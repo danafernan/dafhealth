@@ -8,58 +8,60 @@
 <meta name="apple-mobile-web-app-title" content="DAF Health">
 <title>DAF Health Record</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 :root{
   --dark:#1A1917;
-  --dark2:#252422;
   --teal:#1D9E75;
   --teal-light:#9FE1CB;
   --teal-bg:#E1F5EE;
   --cream:#FAFAF7;
-  --cream2:#F1EEE7;
   --border:#EDEAE3;
   --muted:#A09E96;
   --text:#1A1917;
-  --red:#E24B4A;
-  --red-bg:#FFF0F0;
-  --red-border:#FBDCDC;
-  --amber:#BA7517;
-  --amber-bg:#FFFBF0;
-  --amber-border:#FAE8C0;
-  --font-serif:'Playfair Display',Georgia,serif;
-  --font-body:'Outfit',system-ui,sans-serif;
+  --font:'DM Sans',system-ui,sans-serif;
   --r:16px;--r-sm:10px;--r-pill:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--dark)}
-body{font-family:var(--font-body);color:var(--text)}
-
+body{font-family:var(--font);color:var(--text)}
 .app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;background:var(--cream);position:relative;overflow:hidden}
 
 /* HEADER */
 .header{background:var(--dark);padding:52px 22px 22px;flex-shrink:0}
-.header-row{display:flex;align-items:flex-start;justify-content:space-between}
-.logo{font-family:var(--font-serif);font-size:28px;color:#fff;letter-spacing:-.5px;line-height:1}
-.logo em{color:var(--teal-light);font-style:normal}
-.tagline{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;letter-spacing:.04em}
+.logo{font-size:30px;font-weight:300;color:#fff;letter-spacing:-1px;line-height:1}
+.logo em{color:var(--teal-light);font-style:normal;font-weight:500}
+.tagline{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;letter-spacing:.03em}
 .drive-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(159,225,203,.12);border:1px solid rgba(159,225,203,.25);border-radius:var(--r-pill);padding:6px 12px;font-size:11px;color:var(--teal-light);cursor:pointer;margin-top:14px}
 .drive-pill i{font-size:14px}
-.drive-pill.off{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.4)}
 
 /* CONTENT */
 .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.section{display:none;padding:18px 16px 90px}
+.section{display:none;padding:18px 16px 100px}
 .section.active{display:block}
 
-/* NAV */
-.nav{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;font-size:10px;font-family:var(--font-body);color:var(--muted)}
-.nav-btn i{font-size:21px}
+/* NAV — fixed height, safe area aware */
+.nav{
+  position:absolute;bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  height:calc(60px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;border:none;background:none;cursor:pointer;
+  font-size:10px;font-family:var(--font);color:var(--muted);
+  height:100%;padding:0;
+}
+.nav-btn i{font-size:22px;line-height:1}
+.nav-btn span{font-size:10px;line-height:1}
 .nav-btn.active{color:var(--dark)}
 .nav-btn.active i{color:var(--teal)}
-.nav-fab{width:48px;height:48px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0}
+.nav-fab-wrap{flex:1;display:flex;align-items:center;justify-content:center;height:100%}
+.nav-fab{width:46px;height:46px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
 .nav-fab i{font-size:22px;color:#fff}
 
 /* CARDS */
@@ -72,12 +74,12 @@ body{font-family:var(--font-body);color:var(--text)}
 
 /* ALERTS */
 .alert-row{display:flex;gap:8px;margin-bottom:14px}
-.alert-chip{flex:1;border-radius:var(--r-sm);padding:11px 12px;cursor:pointer}
-.alert-chip.red{background:var(--red-bg);border:1px solid var(--red-border)}
-.alert-chip.amber{background:var(--amber-bg);border:1px solid var(--amber-border)}
+.alert-chip{flex:1;border-radius:var(--r-sm);padding:11px 12px}
+.alert-chip.red{background:#FFF0F0;border:1px solid #FBDCDC}
+.alert-chip.amber{background:#FFFBF0;border:1px solid #FAE8C0}
 .ac-icon{font-size:16px;margin-bottom:5px}
-.alert-chip.red .ac-icon{color:var(--red)}
-.alert-chip.amber .ac-icon{color:var(--amber)}
+.alert-chip.red .ac-icon{color:#E24B4A}
+.alert-chip.amber .ac-icon{color:#BA7517}
 .ac-title{font-size:11px;font-weight:500;line-height:1.3}
 .alert-chip.red .ac-title{color:#791F1F}
 .alert-chip.amber .ac-title{color:#633806}
@@ -89,20 +91,20 @@ body{font-family:var(--font-body);color:var(--text)}
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .kpi{background:var(--cream);border-radius:var(--r-sm);padding:11px 13px}
 .kpi-name{font-size:10px;color:var(--muted)}
-.kpi-val{font-family:var(--font-serif);font-size:24px;color:var(--text);margin:2px 0}
+.kpi-val{font-size:26px;font-weight:300;color:var(--text);margin:2px 0;letter-spacing:-0.5px}
 .badge{display:inline-block;font-size:9px;font-weight:500;padding:2px 8px;border-radius:var(--r-pill)}
 .b-ok{background:#EAF3DE;color:#27500A}
 .b-warn{background:#FAEEDA;color:#633806}
 .b-bad{background:#FCEBEB;color:#791F1F}
-.b-done{background:var(--cream2);color:var(--muted)}
+.b-done{background:#F1EEE7;color:var(--muted)}
 
 /* NUTRI dark */
 .nutri-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)}
 .nutri-row:last-child{border-bottom:none}
 .nutri-label{font-size:12px;color:rgba(255,255,255,.45)}
 .nutri-val{font-size:14px;font-weight:500;color:#fff}
-.nutri-diff{font-size:10px;color:var(--teal-light);margin-left:5px}
-.nutri-diff.up{color:#F09595}
+.nutri-diff-dn{font-size:10px;color:var(--teal-light);margin-left:5px}
+.nutri-diff-up{font-size:10px;color:#F09595;margin-left:5px}
 
 /* ESTUDIOS */
 .study-item{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
@@ -116,11 +118,11 @@ body{font-family:var(--font-body);color:var(--text)}
 .si-eco{background:var(--teal-bg);color:var(--teal)}
 .si-mamo{background:#FBEAF0;color:#993556}
 .si-hueso{background:#FAEEDA;color:#854F0B}
-.si-otro{background:var(--cream2);color:var(--muted)}
+.si-otro{background:#F1EEE7;color:var(--muted)}
 .study-name{font-size:13px;font-weight:500;line-height:1.3;color:var(--text)}
 .study-date{font-size:11px;color:var(--muted);margin-top:2px}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
-.tag{font-size:10px;padding:2px 8px;border-radius:var(--r-pill);background:var(--cream2);color:var(--muted)}
+.tag{font-size:10px;padding:2px 8px;border-radius:var(--r-pill);background:#F1EEE7;color:var(--muted)}
 .tag.bad{background:#FCEBEB;color:#791F1F}
 .tag.warn{background:#FAEEDA;color:#633806}
 .pdf-link{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--teal);margin-top:4px;text-decoration:none;font-weight:500}
@@ -129,7 +131,7 @@ body{font-family:var(--font-body);color:var(--text)}
 .med-card{background:#fff;border-radius:var(--r-sm);border:1px solid var(--border);padding:13px;margin-bottom:8px}
 .med-name{font-size:14px;font-weight:500;color:var(--text)}
 .med-info{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
-.med-bar{height:3px;background:var(--cream2);border-radius:2px;margin-top:10px;overflow:hidden}
+.med-bar{height:3px;background:#F1EEE7;border-radius:2px;margin-top:10px;overflow:hidden}
 .med-fill{height:3px;background:var(--teal);border-radius:2px}
 .med-pct{font-size:10px;color:var(--muted);margin-top:3px}
 
@@ -144,34 +146,37 @@ body{font-family:var(--font-body);color:var(--text)}
 /* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,19,18,.6);z-index:200;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 32px;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.modal{background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 36px;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
-.modal h2{font-family:var(--font-serif);font-size:22px;color:var(--text);margin-bottom:18px}
+.modal h2{font-size:20px;font-weight:500;color:var(--text);margin-bottom:18px;letter-spacing:-0.3px}
 .close-x{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);margin-top:-2px}
 .fg{margin-bottom:13px}
 .fg label{display:block;font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:14px;background:var(--cream);color:var(--text);font-family:var(--font-body);-webkit-appearance:none;outline:none}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:14px;background:var(--cream);color:var(--text);font-family:var(--font);-webkit-appearance:none;outline:none}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--teal)}
 .fg textarea{resize:vertical}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.upload-zone{border:1.5px dashed var(--border);border-radius:var(--r-sm);padding:20px;text-align:center;cursor:pointer;color:var(--muted);font-size:13px;background:var(--cream);transition:border-color .15s,color .15s}
+.upload-zone{border:1.5px dashed var(--border);border-radius:var(--r-sm);padding:18px;text-align:center;cursor:pointer;color:var(--muted);font-size:13px;background:var(--cream);transition:border-color .15s,color .15s}
 .upload-zone:hover,.upload-zone.has{border-color:var(--teal);color:var(--teal);background:var(--teal-bg)}
-.upload-zone i{font-size:26px;display:block;margin-bottom:6px}
+.upload-zone i{font-size:24px;display:block;margin-bottom:5px}
 .uploading{display:none;align-items:center;gap:8px;font-size:12px;color:var(--teal);padding:6px 0}
-.spin{width:14px;height:14px;border:2px solid var(--teal-bg);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite}
+.spin{width:14px;height:14px;border:2px solid var(--teal-bg);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite;flex-shrink:0}
 @keyframes sp{to{transform:rotate(360deg)}}
-.btn-save{background:var(--dark);color:#fff;border:none;border-radius:var(--r-sm);padding:14px;font-size:14px;font-weight:500;width:100%;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px}
-.btn-outline{background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;font-size:13px;width:100%;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text);margin-top:8px}
+.btn-save{background:var(--dark);color:#fff;border:none;border-radius:var(--r-sm);padding:14px;font-size:14px;font-weight:500;width:100%;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px}
+.btn-teal{background:var(--teal);color:#fff;border:none;border-radius:var(--r-sm);padding:14px;font-size:14px;font-weight:500;width:100%;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px}
+.btn-outline{background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;font-size:13px;width:100%;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text);margin-top:8px}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.section-mini{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 
 /* LOGIN */
-.login{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:100vh;padding:32px 24px 48px;background:var(--dark);text-align:center}
-.login-logo{font-family:var(--font-serif);font-size:42px;color:#fff;letter-spacing:-1px;margin-bottom:8px}
-.login-logo em{color:var(--teal-light);font-style:normal}
+.login{display:none;flex-direction:column;align-items:center;justify-content:flex-end;min-height:100vh;padding:32px 24px 52px;background:var(--dark);text-align:center}
+.login-logo{font-size:44px;font-weight:300;color:#fff;letter-spacing:-1.5px;margin-bottom:8px}
+.login-logo em{color:var(--teal-light);font-style:normal;font-weight:500}
 .login-sub{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:40px;line-height:1.6}
 .login-feats{text-align:left;width:100%;margin-bottom:32px}
 .login-feat{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:rgba(255,255,255,.6)}
 .login-feat i{font-size:16px;color:var(--teal-light);flex-shrink:0}
-.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:none;border-radius:var(--r-sm);padding:15px 20px;font-size:15px;font-weight:500;cursor:pointer;width:100%;font-family:var(--font-body)}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:none;border-radius:var(--r-sm);padding:15px 20px;font-size:15px;font-weight:500;cursor:pointer;width:100%;font-family:var(--font)}
 </style>
 </head>
 <body>
@@ -194,13 +199,9 @@ body{font-family:var(--font-body);color:var(--text)}
 
 <div class="app" id="app" style="display:none">
   <div class="header">
-    <div class="header-row">
-      <div>
-        <div class="logo">DAF <em>Health</em></div>
-        <div class="tagline" id="tagline">Tu historial médico personal</div>
-      </div>
-    </div>
-    <div class="drive-pill connected" id="drive-pill">
+    <div class="logo">DAF <em>Health</em></div>
+    <div class="tagline" id="tagline">Tu historial médico personal</div>
+    <div class="drive-pill" id="drive-pill">
       <i class="ti ti-brand-google-drive"></i>
       <span>Drive conectado</span>
     </div>
@@ -208,19 +209,17 @@ body{font-family:var(--font-body);color:var(--text)}
 
   <div class="content">
     <div class="section active" id="sec-inicio">
-      <div style="margin-bottom:14px">
-        <div class="sec-label">Alertas</div>
-        <div class="alert-row">
-          <div class="alert-chip red">
-            <div class="ac-icon"><i class="ti ti-alert-circle"></i></div>
-            <div class="ac-title">Ginecología vencida</div>
-            <div class="ac-sub">Último: mayo 2024</div>
-          </div>
-          <div class="alert-chip amber">
-            <div class="ac-icon"><i class="ti ti-clock"></i></div>
-            <div class="ac-title">Nutrición en 8 días</div>
-            <div class="ac-sub">12 jun 2025</div>
-          </div>
+      <div class="sec-label">Alertas</div>
+      <div class="alert-row">
+        <div class="alert-chip red">
+          <div class="ac-icon"><i class="ti ti-alert-circle"></i></div>
+          <div class="ac-title">Ginecología vencida</div>
+          <div class="ac-sub">Último: mayo 2024</div>
+        </div>
+        <div class="alert-chip amber">
+          <div class="ac-icon"><i class="ti ti-clock"></i></div>
+          <div class="ac-title">Nutrición en 8 días</div>
+          <div class="ac-sub">12 jun 2025</div>
         </div>
       </div>
       <div class="sec-label">KPIs · último análisis</div>
@@ -263,22 +262,34 @@ body{font-family:var(--font-body);color:var(--text)}
   </div>
 
   <nav class="nav">
-    <button class="nav-btn active" onclick="showSec('inicio',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nav-btn" onclick="showSec('estudios',this)"><i class="ti ti-file-medical"></i>Estudios</button>
-    <button class="nav-fab" onclick="openAdd()"><i class="ti ti-plus"></i></button>
-    <button class="nav-btn" onclick="showSec('nutri',this)"><i class="ti ti-salad"></i>Nutrición</button>
-    <button class="nav-btn" onclick="showSec('med',this)"><i class="ti ti-pill"></i>Medicación</button>
+    <button class="nav-btn active" onclick="showSec('inicio',this)">
+      <i class="ti ti-home"></i><span>Inicio</span>
+    </button>
+    <button class="nav-btn" onclick="showSec('estudios',this)">
+      <i class="ti ti-file-medical"></i><span>Estudios</span>
+    </button>
+    <div class="nav-fab-wrap">
+      <button class="nav-fab" onclick="openModal('modal-add')">
+        <i class="ti ti-plus"></i>
+      </button>
+    </div>
+    <button class="nav-btn" onclick="showSec('nutri',this)">
+      <i class="ti ti-salad"></i><span>Nutrición</span>
+    </button>
+    <button class="nav-btn" onclick="showSec('med',this)">
+      <i class="ti ti-pill"></i><span>Med.</span>
+    </button>
   </nav>
 </div>
 
-<!-- ADD PICKER -->
+<!-- MODAL ADD PICKER -->
 <div class="modal-overlay" id="modal-add">
 <div class="modal">
   <div class="modal-handle"></div>
   <button class="close-x" onclick="closeModal('modal-add')"><i class="ti ti-x"></i></button>
   <h2>¿Qué cargás?</h2>
   <button class="btn-save" style="margin-bottom:10px" onclick="closeModal('modal-add');openModal('modal-estudio')"><i class="ti ti-file-medical"></i>Estudio o análisis</button>
-  <button class="btn-save" style="background:var(--teal);margin-bottom:10px" onclick="closeModal('modal-add');openModal('modal-nutri')"><i class="ti ti-salad"></i>Consulta nutricional</button>
+  <button class="btn-teal" onclick="closeModal('modal-add');openModal('modal-nutri')"><i class="ti ti-salad"></i>Consulta nutricional</button>
   <button class="btn-outline" onclick="closeModal('modal-add');openModal('modal-med')"><i class="ti ti-pill"></i>Medicación</button>
 </div>
 </div>
@@ -308,14 +319,14 @@ body{font-family:var(--font-body);color:var(--text)}
     <div class="fg"><label>Fecha</label><input type="date" id="e-fecha"></div>
     <div class="fg"><label>Profesional</label><input type="text" id="e-prof" placeholder="Dra. López"></div>
   </div>
-  <div class="fg"><label>Resultado / notas</label><textarea rows="3" id="e-notas" placeholder="Resultados, observaciones del médico..."></textarea></div>
+  <div class="fg"><label>Resultado / notas</label><textarea rows="3" id="e-notas" placeholder="Resultados, observaciones..."></textarea></div>
   <div class="fg"><label>PDF del estudio</label>
-    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('e-pdf').click()">
+    <div class="upload-zone" id="upload-zone-e" onclick="document.getElementById('e-pdf').click()">
       <i class="ti ti-cloud-upload"></i>
-      <span id="upload-label">Tocá para adjuntar el PDF</span>
+      <span id="upload-label-e">Tocá para adjuntar el PDF</span>
     </div>
-    <input type="file" id="e-pdf" accept=".pdf,application/pdf" style="display:none" onchange="handleFile(this)">
-    <div class="uploading" id="uploading"><div class="spin"></div>Subiendo a Google Drive...</div>
+    <input type="file" id="e-pdf" accept=".pdf" style="display:none" onchange="handleFile(this,'e')">
+    <div class="uploading" id="uploading-e"><div class="spin"></div>Subiendo a Google Drive...</div>
   </div>
   <button class="btn-save" onclick="guardarEstudio()"><i class="ti ti-device-floppy"></i>Guardar estudio</button>
 </div>
@@ -341,6 +352,16 @@ body{font-family:var(--font-body);color:var(--text)}
     <div class="fg"><label>Cadera (cm)</label><input type="number" step="0.1" id="n-cad" placeholder="96"></div>
   </div>
   <div class="fg"><label>Observaciones</label><textarea rows="2" id="n-obs" placeholder="Plan, indicaciones, objetivos..."></textarea></div>
+  <div class="divider"></div>
+  <div class="section-mini">Antropometría · PDF de respaldo</div>
+  <div class="fg">
+    <div class="upload-zone" id="upload-zone-n" onclick="document.getElementById('n-pdf').click()">
+      <i class="ti ti-cloud-upload"></i>
+      <span id="upload-label-n">Adjuntar PDF de antropometría</span>
+    </div>
+    <input type="file" id="n-pdf" accept=".pdf" style="display:none" onchange="handleFile(this,'n')">
+    <div class="uploading" id="uploading-n"><div class="spin"></div>Subiendo a Google Drive...</div>
+  </div>
   <button class="btn-save" onclick="guardarNutri()"><i class="ti ti-device-floppy"></i>Guardar</button>
 </div>
 </div>
@@ -370,13 +391,13 @@ const CLIENT_ID='658649405678-jdli5prlqsreeq2f48v85t6kk8vh07mb.apps.googleuserco
 const SCOPES='https://www.googleapis.com/auth/drive.file';
 const FOLDER='DAF Health Record';
 
-let token=null,folderId=null,pendingFile=null,nutriChart=null;
+let token=null,folderId=null,pendingFileE=null,pendingFileN=null,nutriChart=null;
 
 let estudios=JSON.parse(localStorage.getItem('daf_e')||'[]');
 let nutris=JSON.parse(localStorage.getItem('daf_n')||JSON.stringify([
-  {fecha:'2025-03-10',peso:67.5,grasa:30.2,musculo:20,obs:''},
-  {fecha:'2025-04-10',peso:66.2,grasa:29.1,musculo:20.5,obs:''},
-  {fecha:'2025-05-10',peso:65,grasa:28,musculo:21,obs:''}
+  {fecha:'2025-03-10',peso:67.5,grasa:30.2,musculo:20,obs:'',pdfUrl:null},
+  {fecha:'2025-04-10',peso:66.2,grasa:29.1,musculo:20.5,obs:'',pdfUrl:null},
+  {fecha:'2025-05-10',peso:65,grasa:28,musculo:21,obs:'',pdfUrl:null}
 ]));
 let meds=JSON.parse(localStorage.getItem('daf_m')||'[]');
 
@@ -413,7 +434,7 @@ async function getUserInfo(){
   try{
     const r=await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+token}});
     const u=await r.json();
-    document.getElementById('tagline').textContent=u.name?'Hola, '+u.name.split(' ')[0]:'Tu historial médico';
+    if(u.name)document.getElementById('tagline').textContent='Hola, '+u.name.split(' ')[0];
   }catch(e){}
 }
 
@@ -430,7 +451,6 @@ async function ensureFolder(){
 function today(){return new Date().toISOString().split('T')[0]}
 function addDays(s,n){const d=new Date(s);d.setDate(d.getDate()+n);return d.toISOString().split('T')[0]}
 function diasRest(fin){return Math.round((new Date(fin)-new Date(today()))/86400000)}
-
 function fmtFecha(s){
   if(!s)return'';
   const[y,m,d]=s.split('-');
@@ -449,8 +469,7 @@ const TIPO_MAP={
   nutri:{label:'Nutrición — seguimiento',cls:'si-nutri',icon:'ti-salad'},
   otro:{label:'Otro',cls:'si-otro',icon:'ti-stethoscope'}
 };
-
-function getTipo(key){return TIPO_MAP[key]||TIPO_MAP['otro'];}
+function getTipo(k){return TIPO_MAP[k]||TIPO_MAP['otro']}
 
 function showSec(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -460,27 +479,35 @@ function showSec(id,btn){
   if(id==='nutri')setTimeout(renderChart,50);
 }
 
-function openAdd(){openModal('modal-add')}
 function openModal(id){
   document.getElementById(id).classList.add('open');
   const t=today();
-  if(id==='modal-estudio'){document.getElementById('e-fecha').value=t;document.getElementById('upload-zone').classList.remove('has');document.getElementById('upload-label').textContent='Tocá para adjuntar el PDF';pendingFile=null;}
-  if(id==='modal-nutri')document.getElementById('n-fecha').value=t;
+  if(id==='modal-estudio'){
+    document.getElementById('e-fecha').value=t;
+    document.getElementById('upload-zone-e').classList.remove('has');
+    document.getElementById('upload-label-e').textContent='Tocá para adjuntar el PDF';
+    pendingFileE=null;
+  }
+  if(id==='modal-nutri'){
+    document.getElementById('n-fecha').value=t;
+    document.getElementById('upload-zone-n').classList.remove('has');
+    document.getElementById('upload-label-n').textContent='Adjuntar PDF de antropometría';
+    pendingFileN=null;
+  }
   if(id==='modal-med')document.getElementById('m-inicio').value=t;
 }
 function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 
-function handleFile(input){
+function handleFile(input,ctx){
   const f=input.files[0];if(!f)return;
-  pendingFile=f;
-  document.getElementById('upload-zone').classList.add('has');
-  document.getElementById('upload-label').textContent=f.name;
+  if(ctx==='e'){pendingFileE=f;document.getElementById('upload-zone-e').classList.add('has');document.getElementById('upload-label-e').textContent=f.name;}
+  if(ctx==='n'){pendingFileN=f;document.getElementById('upload-zone-n').classList.add('has');document.getElementById('upload-label-n').textContent=f.name;}
 }
 
-async function uploadDrive(file,name){
+async function uploadDrive(file,name,ctx){
   if(!token||!folderId)return null;
-  document.getElementById('uploading').style.display='flex';
+  document.getElementById('uploading-'+ctx).style.display='flex';
   try{
     const meta={name:name+' — '+file.name,parents:[folderId]};
     const form=new FormData();
@@ -489,7 +516,7 @@ async function uploadDrive(file,name){
     const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink',{method:'POST',headers:{Authorization:'Bearer '+token},body:form});
     const d=await r.json();return d.webViewLink||null;
   }catch(e){return null;}
-  finally{document.getElementById('uploading').style.display='none';}
+  finally{document.getElementById('uploading-'+ctx).style.display='none';}
 }
 
 function renderAll(){renderEstudios();renderNutriInicio();renderNutriHistorial();renderMeds();}
@@ -497,7 +524,7 @@ function renderAll(){renderEstudios();renderNutriInicio();renderNutriHistorial()
 function renderEstudios(){
   const base=[
     {tipo:'gine',fecha:'2024-05-15',prof:'Dra. Rodríguez',notas:'PAP normal · Eco transvaginal OK',pdfUrl:null},
-    {tipo:'sangre',fecha:'2025-03-03',prof:'Lab. Central',notas:'Hierro bajo · LDL límite · Glucosa OK · TSH normal',pdfUrl:null},
+    {tipo:'sangre',fecha:'2025-03-03',prof:'Lab. Central',notas:'Hierro bajo · LDL límite · Glucosa OK',pdfUrl:null},
   ];
   const all=[...estudios,...base].sort((a,b)=>a.fecha<b.fecha?1:-1);
   document.getElementById('estudios-list').innerHTML=all.map(e=>{
@@ -509,30 +536,31 @@ function renderEstudios(){
       <div style="flex:1;min-width:0">
         <div class="study-name">${t.label}</div>
         <div class="study-date">${fmtFecha(e.fecha)}${e.prof?' · '+e.prof:''}</div>
-        ${tags?`<div class="tags">${tags}</div>`:''}
-        ${pdf}
+        ${tags?`<div class="tags">${tags}</div>`:''}${pdf}
       </div></div>`;
   }).join('')||'<div class="empty"><i class="ti ti-file-medical"></i><p>Sin estudios cargados</p></div>';
 }
 
 function renderNutriInicio(){
-  const s=[...nutris].sort((a,b)=>a.fecha>b.fecha?1:-1).slice(0,3);
-  document.getElementById('nutri-inicio').innerHTML=`<div class="card-title"><i class="ti ti-chart-line"></i>Últimas sesiones</div>`+
+  const s=[...nutris].sort((a,b)=>a.fecha<b.fecha?1:-1).slice(0,3);
+  document.getElementById('nutri-inicio').innerHTML=
+    `<div class="card-title"><i class="ti ti-chart-line"></i>Últimas sesiones</div>`+
     (s.length?s.map((n,i)=>{
       const prev=s[i+1];
       const dif=prev&&n.peso&&prev.peso?+(n.peso-prev.peso).toFixed(1):null;
-      const difEl=dif!==null?`<span class="nutri-diff ${dif>0?'up':''}">${dif<0?'▼':'▲'}${Math.abs(dif)}</span>`:'';
+      const difEl=dif!==null?`<span class="${dif<0?'nutri-diff-dn':'nutri-diff-up'}">${dif<0?'▼':'▲'}${Math.abs(dif)}</span>`:'';
       return`<div class="nutri-row"><span class="nutri-label">${fmtFecha(n.fecha)}</span><span class="nutri-val">${n.peso?n.peso+' kg':'-'}${difEl}</span></div>`;
     }).join(''):'<div style="color:rgba(255,255,255,.3);font-size:13px;padding:8px 0;text-align:center">Sin registros</div>');
 }
 
 function renderNutriHistorial(){
-  const s=[...nutris].sort((a,b)=>a.fecha<b.fecha?1:-1);
+  const s=[...nutris].sort((a,b)=>a.fecha<b.fecha?1:-1).reverse();
   document.getElementById('nutri-historial').innerHTML=s.map((n,i)=>{
     const prev=s[i+1];
     const dif=prev&&n.peso&&prev.peso?+(n.peso-prev.peso).toFixed(1):null;
     const difEl=dif!==null?`<span style="font-size:10px;color:${dif<0?'#1D9E75':'#E24B4A'};margin-left:5px">${dif<0?'▼':'▲'}${Math.abs(dif)}kg</span>`:'';
     const imc=n.alt?+(n.peso/((n.alt/100)**2)).toFixed(1):null;
+    const pdf=n.pdfUrl?`<a href="${n.pdfUrl}" target="_blank" class="pdf-link"><i class="ti ti-file-type-pdf" style="font-size:13px"></i>Ver antropometría</a>`:'';
     return`<div class="study-item">
       <div class="study-ico si-nutri"><i class="ti ti-calendar"></i></div>
       <div style="flex:1">
@@ -540,6 +568,7 @@ function renderNutriHistorial(){
         <div class="study-date">${n.peso?n.peso+' kg':''} ${difEl}${n.grasa?' · Grasa '+n.grasa+'%':''}${n.musculo?' · Músculo '+n.musculo+' kg':''}</div>
         ${imc?`<div class="tags"><span class="tag">IMC ${imc}</span></div>`:''}
         ${n.obs?`<div class="study-date" style="margin-top:3px">${n.obs}</div>`:''}
+        ${pdf}
       </div></div>`;
   }).join('')||'<div class="empty"><i class="ti ti-salad"></i><p>Sin registros</p></div>';
 }
@@ -552,7 +581,7 @@ function renderChart(){
   nutriChart=new Chart(canvas,{
     type:'line',
     data:{labels:s.map(n=>fmtFecha(n.fecha)),datasets:[{label:'Peso',data:s.map(n=>n.peso),borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.07)',tension:0.4,pointRadius:4,pointBackgroundColor:'#1D9E75',fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#A09E96'}},x:{grid:{display:false},ticks:{font:{size:10},color:'#A09E96'}}}}
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10,family:'DM Sans'},color:'#A09E96'}},x:{grid:{display:false},ticks:{font:{size:10,family:'DM Sans'},color:'#A09E96'}}}}
   });
 }
 
@@ -586,7 +615,7 @@ function renderMeds(){
   document.getElementById('med-activa').innerHTML=act.length?act.map(m=>mkCard(m,true)).join(''):'<div class="empty"><i class="ti ti-pill"></i><p>Ninguna activa</p></div>';
   document.getElementById('med-hist').innerHTML=fin.length?fin.map(m=>mkCard(m,false)).join(''):'<div class="empty"><i class="ti ti-history"></i><p>Sin historial</p></div>';
   document.getElementById('med-inicio').innerHTML=act.length?act.map(m=>`
-    <div class="med-card" style="display:flex;align-items:center;gap:10px;padding:11px 13px">
+    <div class="med-card" style="display:flex;align-items:center;gap:10px;padding:11px 13px;margin-bottom:6px">
       <div class="study-ico si-eco" style="width:32px;height:32px;font-size:15px"><i class="ti ti-pill"></i></div>
       <div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nombre}</div><div style="font-size:11px;color:#A09E96">${m.motivo||''}</div></div>
       <span class="badge b-ok">${diasRest(m.fin)>0?diasRest(m.fin)+'d':'hoy'}</span>
@@ -598,21 +627,31 @@ async function guardarEstudio(){
   const fecha=document.getElementById('e-fecha').value;
   if(!tipo||!fecha){alert('Completá el tipo y la fecha');return;}
   let pdfUrl=null;
-  if(pendingFile&&token)pdfUrl=await uploadDrive(pendingFile,getTipo(tipo).label+' '+fecha);
+  if(pendingFileE&&token)pdfUrl=await uploadDrive(pendingFileE,getTipo(tipo).label+' '+fecha,'e');
   estudios.unshift({tipo,fecha,prof:document.getElementById('e-prof').value,notas:document.getElementById('e-notas').value,pdfUrl});
   save();renderEstudios();closeModal('modal-estudio');
   ['e-prof','e-notas'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('e-tipo').value='';
-  pendingFile=null;
+  document.getElementById('e-tipo').value='';pendingFileE=null;
 }
 
-function guardarNutri(){
+async function guardarNutri(){
   const fecha=document.getElementById('n-fecha').value;
   const peso=parseFloat(document.getElementById('n-peso').value)||null;
   if(!fecha||!peso){alert('Ingresá al menos fecha y peso');return;}
-  nutris.push({fecha,peso,alt:parseFloat(document.getElementById('n-alt').value)||null,grasa:parseFloat(document.getElementById('n-grasa').value)||null,musculo:parseFloat(document.getElementById('n-musc').value)||null,obs:document.getElementById('n-obs').value});
+  let pdfUrl=null;
+  if(pendingFileN&&token)pdfUrl=await uploadDrive(pendingFileN,'Antropometría '+fecha,'n');
+  nutris.push({fecha,peso,
+    alt:parseFloat(document.getElementById('n-alt').value)||null,
+    grasa:parseFloat(document.getElementById('n-grasa').value)||null,
+    musculo:parseFloat(document.getElementById('n-musc').value)||null,
+    cin:parseFloat(document.getElementById('n-cin').value)||null,
+    cad:parseFloat(document.getElementById('n-cad').value)||null,
+    obs:document.getElementById('n-obs').value,
+    pdfUrl
+  });
   nutris.sort((a,b)=>a.fecha>b.fecha?1:-1);
   save();renderNutriInicio();renderNutriHistorial();renderChart();closeModal('modal-nutri');
+  pendingFileN=null;
 }
 
 function guardarMed(){
@@ -620,7 +659,12 @@ function guardarMed(){
   const inicio=document.getElementById('m-inicio').value;
   const dias=parseInt(document.getElementById('m-dias').value)||0;
   if(!nombre||!inicio||!dias){alert('Completá medicamento, fecha y duración');return;}
-  meds.push({nombre,inicio,dias,fin:addDays(inicio,dias-1),motivo:document.getElementById('m-motivo').value,med:document.getElementById('m-med').value,dosis:document.getElementById('m-dosis').value,notas:document.getElementById('m-notas').value});
+  meds.push({nombre,inicio,dias,fin:addDays(inicio,dias-1),
+    motivo:document.getElementById('m-motivo').value,
+    med:document.getElementById('m-med').value,
+    dosis:document.getElementById('m-dosis').value,
+    notas:document.getElementById('m-notas').value
+  });
   meds.sort((a,b)=>a.inicio<b.inicio?1:-1);
   save();renderMeds();closeModal('modal-med');
   ['m-nombre','m-motivo','m-med','m-dias','m-dosis','m-notas'].forEach(id=>document.getElementById(id).value='');
