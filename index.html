@@ -263,21 +263,25 @@ body{font-family:var(--font);color:var(--text)}
 
   <nav class="nav">
     <button class="nav-btn active" onclick="showSec('inicio',this)">
-      <i class="ti ti-home"></i><span>Inicio</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Inicio</span>
     </button>
     <button class="nav-btn" onclick="showSec('estudios',this)">
-      <i class="ti ti-file-medical"></i><span>Estudios</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Estudios</span>
     </button>
     <div class="nav-fab-wrap">
       <button class="nav-fab" onclick="openModal('modal-add')">
-        <i class="ti ti-plus"></i>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
     </div>
     <button class="nav-btn" onclick="showSec('nutri',this)">
-      <i class="ti ti-salad"></i><span>Nutrición</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <span>Nutrición</span>
     </button>
     <button class="nav-btn" onclick="showSec('med',this)">
-      <i class="ti ti-pill"></i><span>Med.</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 15 6-6"/><path d="M9 9h.01M15 15h.01"/></svg>
+      <span>Med.</span>
     </button>
   </nav>
 </div>
@@ -522,23 +526,27 @@ async function uploadDrive(file,name,ctx){
 function renderAll(){renderEstudios();renderNutriInicio();renderNutriHistorial();renderMeds();}
 
 function renderEstudios(){
-  const base=[
-    {tipo:'gine',fecha:'2024-05-15',prof:'Dra. Rodríguez',notas:'PAP normal · Eco transvaginal OK',pdfUrl:null},
-    {tipo:'sangre',fecha:'2025-03-03',prof:'Lab. Central',notas:'Hierro bajo · LDL límite · Glucosa OK',pdfUrl:null},
-  ];
-  const all=[...estudios,...base].sort((a,b)=>a.fecha<b.fecha?1:-1);
-  document.getElementById('estudios-list').innerHTML=all.map(e=>{
+  const all=[...estudios].sort((a,b)=>a.fecha<b.fecha?1:-1);
+  document.getElementById('estudios-list').innerHTML=all.map((e,i)=>{
     const t=getTipo(e.tipo);
     const tags=e.notas?e.notas.split('·').map(s=>`<span class="tag">${s.trim()}</span>`).join(''):'';
     const pdf=e.pdfUrl?`<a href="${e.pdfUrl}" target="_blank" class="pdf-link"><i class="ti ti-file-type-pdf" style="font-size:13px"></i>Ver PDF</a>`:'';
-    return`<div class="study-item">
+    return`<div class="study-item" id="estudio-${i}">
       <div class="study-ico ${t.cls}"><i class="ti ${t.icon}"></i></div>
       <div style="flex:1;min-width:0">
         <div class="study-name">${t.label}</div>
         <div class="study-date">${fmtFecha(e.fecha)}${e.prof?' · '+e.prof:''}</div>
         ${tags?`<div class="tags">${tags}</div>`:''}${pdf}
-      </div></div>`;
+      </div>
+      <button onclick="borrarEstudio(${i})" style="background:none;border:none;cursor:pointer;color:#D0CCC4;padding:4px;flex-shrink:0;font-size:16px"><i class="ti ti-trash"></i></button>
+    </div>`;
   }).join('')||'<div class="empty"><i class="ti ti-file-medical"></i><p>Sin estudios cargados</p></div>';
+}
+
+function borrarEstudio(i){
+  if(!confirm('¿Borrar este estudio?'))return;
+  estudios.splice(i,1);
+  save();renderEstudios();
 }
 
 function renderNutriInicio(){
@@ -556,6 +564,7 @@ function renderNutriInicio(){
 function renderNutriHistorial(){
   const s=[...nutris].sort((a,b)=>a.fecha<b.fecha?1:-1).reverse();
   document.getElementById('nutri-historial').innerHTML=s.map((n,i)=>{
+    const realIdx=nutris.findIndex(x=>x.fecha===n.fecha&&x.peso===n.peso);
     const prev=s[i+1];
     const dif=prev&&n.peso&&prev.peso?+(n.peso-prev.peso).toFixed(1):null;
     const difEl=dif!==null?`<span style="font-size:10px;color:${dif<0?'#1D9E75':'#E24B4A'};margin-left:5px">${dif<0?'▼':'▲'}${Math.abs(dif)}kg</span>`:'';
@@ -569,8 +578,16 @@ function renderNutriHistorial(){
         ${imc?`<div class="tags"><span class="tag">IMC ${imc}</span></div>`:''}
         ${n.obs?`<div class="study-date" style="margin-top:3px">${n.obs}</div>`:''}
         ${pdf}
-      </div></div>`;
+      </div>
+      <button onclick="borrarNutri(${realIdx})" style="background:none;border:none;cursor:pointer;color:#D0CCC4;padding:4px;flex-shrink:0;font-size:16px"><i class="ti ti-trash"></i></button>
+    </div>`;
   }).join('')||'<div class="empty"><i class="ti ti-salad"></i><p>Sin registros</p></div>';
+}
+
+function borrarNutri(i){
+  if(!confirm('¿Borrar esta sesión?'))return;
+  nutris.splice(i,1);
+  save();renderNutriInicio();renderNutriHistorial();renderChart();
 }
 
 function renderChart(){
@@ -589,7 +606,7 @@ function renderMeds(){
   const h=today();
   const act=meds.filter(m=>m.fin>=h);
   const fin=meds.filter(m=>m.fin<h).sort((a,b)=>a.fin<b.fin?1:-1);
-  const mkCard=(m,active)=>{
+  const mkCard=(m,active,realIdx)=>{
     const tot=Math.round((new Date(m.fin)-new Date(m.inicio))/86400000)+1;
     const pas=Math.round((new Date(h)-new Date(m.inicio))/86400000);
     const pct=Math.min(100,Math.max(0,Math.round(pas/tot*100)));
@@ -601,7 +618,10 @@ function renderMeds(){
           <div class="med-info">${m.motivo?m.motivo:''}${m.med?' · '+m.med:''}</div>
           ${m.dosis?`<div class="med-info">${m.dosis}</div>`:''}
         </div>
-        <span class="badge ${active?'b-ok':'b-done'}">${active?(rest>0?rest+' días':'hoy'):'finalizado'}</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="badge ${active?'b-ok':'b-done'}">${active?(rest>0?rest+' días':'hoy'):'finalizado'}</span>
+          <button onclick="borrarMed(${realIdx})" style="background:none;border:none;cursor:pointer;color:#D0CCC4;padding:2px;font-size:15px"><i class="ti ti-trash"></i></button>
+        </div>
       </div>
       <div class="tags" style="margin-top:7px">
         <span class="tag">${fmtFecha(m.inicio)}</span>
@@ -612,14 +632,19 @@ function renderMeds(){
       ${m.notas?`<div class="med-info" style="margin-top:5px">${m.notas}</div>`:''}
     </div>`;
   };
-  document.getElementById('med-activa').innerHTML=act.length?act.map(m=>mkCard(m,true)).join(''):'<div class="empty"><i class="ti ti-pill"></i><p>Ninguna activa</p></div>';
-  document.getElementById('med-hist').innerHTML=fin.length?fin.map(m=>mkCard(m,false)).join(''):'<div class="empty"><i class="ti ti-history"></i><p>Sin historial</p></div>';
+  document.getElementById('med-activa').innerHTML=act.length?act.map(m=>mkCard(m,true,meds.indexOf(m))).join(''):'<div class="empty"><i class="ti ti-pill"></i><p>Ninguna activa</p></div>';
+  document.getElementById('med-hist').innerHTML=fin.length?fin.map(m=>mkCard(m,false,meds.indexOf(m))).join(''):'<div class="empty"><i class="ti ti-history"></i><p>Sin historial</p></div>';
   document.getElementById('med-inicio').innerHTML=act.length?act.map(m=>`
     <div class="med-card" style="display:flex;align-items:center;gap:10px;padding:11px 13px;margin-bottom:6px">
       <div class="study-ico si-eco" style="width:32px;height:32px;font-size:15px"><i class="ti ti-pill"></i></div>
       <div style="flex:1"><div style="font-size:13px;font-weight:500">${m.nombre}</div><div style="font-size:11px;color:#A09E96">${m.motivo||''}</div></div>
       <span class="badge b-ok">${diasRest(m.fin)>0?diasRest(m.fin)+'d':'hoy'}</span>
     </div>`).join(''):'<div class="empty"><i class="ti ti-pill"></i><p>Sin medicación activa</p></div>';
+}
+
+function borrarMed(i){
+  if(!confirm('¿Borrar este medicamento?'))return;
+  meds.splice(i,1);save();renderMeds();
 }
 
 async function guardarEstudio(){
